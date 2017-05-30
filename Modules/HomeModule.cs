@@ -1,4 +1,5 @@
 using Nancy;
+using Language;
 
 namespace Translator
 {
@@ -6,10 +7,16 @@ namespace Translator
   {
     public HomeModule()
     {
-      Get[""] = _=>
+      Get["/"] = _=>
       {
-        
-      }
+        return View["index.cshtml"];
+      };
+      Post["/output"] = _=>
+      {
+        LeetSpeakTranslator.Translate(Request.Form["userSentence"]);
+        string final = LeetSpeakTranslator.Convert();
+        return View["form-confirm.cshtml", final];
+      };
     }
   }
 }
